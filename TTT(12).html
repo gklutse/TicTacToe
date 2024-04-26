@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser-arcade-physics.min.js"></script>
+</head>
+<body>
+<div id="phaser-id">
+    <div id="gameAlertA" class="w3-content"></div>
+
+    
+</div>
+
+<div id="alertDiv"></div>
+
+
+    <script>
+    const gameState = {};
+    let rectW = (window.innerWidth/2) - 150;
+    let rectH = (window.innerHeight/2) - 150;
+    var computerPlayTimerVar;
+    var computerPlayTimerTxt;
+    var gameAlertATimerVar;
+
+    function preload()
+    {
+        this.load.image('RCross', 'http://localhost:8080/PHP_FD/TicTacToe(Game)/Assets/RedCross.png');
+        this.load.image('GSquare', 'http://localhost:8080/PHP_FD/TicTacToe(Game)/Assets/GreenSquare.png');
+    }
+
+    function create()
+    {
+    
+        // adding 9 rectangles
+        gameState.rect1 = this.add.rectangle(rectW, rectH, 100, 100, 0xffffff).setStrokeStyle(2, 0x000000).setInteractive().setOrigin(0, 0);
+        gameState.rect2 = this.add.rectangle((rectW+100), rectH, 100, 100, 0xffffff).setStrokeStyle(2, 0x000000).setInteractive().setOrigin(0, 0);
+        gameState.rect3 = this.add.rectangle((rectW+200), rectH, 100, 100, 0xffffff).setStrokeStyle(2, 0x000000).setInteractive().setOrigin(0, 0);
+        gameState.rect4 = this.add.rectangle(rectW, (rectH+100), 100, 100, 0xffffff).setStrokeStyle(2, 0x000000).setInteractive().setOrigin(0, 0);
+        gameState.rect5 = this.add.rectangle((rectW+100), (rectH+100), 100, 100, 0xffffff).setStrokeStyle(2, 0x000000).setInteractive().setOrigin(0, 0);
+        gameState.rect6 = this.add.rectangle((rectW+200), (rectH+100), 100, 100, 0xffffff).setStrokeStyle(2, 0x000000).setInteractive().setOrigin(0, 0);
+        gameState.rect7 = this.add.rectangle(rectW, (rectH+200), 100, 100, 0xffffff).setStrokeStyle(2, 0x000000).setInteractive().setOrigin(0, 0);
+        gameState.rect8 = this.add.rectangle((rectW+100), (rectH+200), 100, 100, 0xffffff).setStrokeStyle(2, 0x000000).setInteractive().setOrigin(0, 0);
+        gameState.rect9 = this.add.rectangle((rectW+200), (rectH+200), 100, 100, 0xffffff).setStrokeStyle(2, 0x000000).setInteractive().setOrigin(0, 0);
+    
+        // add inputs and functions to make it a game
+
+        gameState.isSquareClicked = [false, false, false, false, false, false, false, false, false];
+        gameState.playerTurnInt = 0;
+        const winnerDeciderObj = ['N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N'];
+       
+
+        gameState.rect1.on('pointerup', ()=>{
+            
+            if ((gameState.isSquareClicked[0] == false) && (gameState.playerTurnInt == 0)) {
+                this.add.sprite((rectW+50), (rectH+50), 'RCross');
+                gameState.isSquareClicked[0] = true;
+                winnerDeciderObj[0] = 'W';               
+                gameState.playerTurnInt += 1;
+                winnerDecider();
+                if (winnerDeciderVar == 0) {
+                    gameAlert('YOU WIN!!!');
+                } else {
+                    computerPlayTimer();
+                }
+            } else if  ((gameState.isSquareClicked[0] == false) && (gameState.playerTurnInt != 0)) {
+                gameAlertA('WAIT FOR COMPUTER\'S TURN');
+            } else if (gameState.isSquareClicked[0] = true) {
+                gameAlertA('BOX 1 IS ALREADY CLICKED');
+            }
+            
+        });
+
+        gameState.rect2.on('pointerup', ()=>{
+            
+            if ((gameState.isSquareClicked[1] == false) && (gameState.playerTurnInt == 0)) {
+                this.add.sprite((rectW+150), (rectH+50), 'RCross');
+                gameState.isSquareClicked[1] = true;
+                winnerDeciderObj[1] = 'W';
+                gameState.playerTurnInt += 1;
+                winnerDecider();
+                if (winnerDeciderVar == 0) {
+                    gameAlert('YOU WIN!!!');
+                } else {
+                    computerPlayTimer();
+                }
+            } else if  ((gameState.isSquareClicked[1] == false) && (gameState.playerTurnInt != 0)) {
+                gameAlertA('WAIT FOR COMPUTER\'S TURN');
+            } else if (gameState.isSquareClicked[1] = true) {
+                gameAlertA('BOX 2 IS ALREADY CLICKED');
+            }
+            
+        });
+
+        gameState.rect3.on('pointerup', ()=>{
+            
+            if ((gameState.isSquareClicked[2] == false) && (gameState.playerTurnInt == 0)) {
+                this.add.sprite((rectW+250), (rectH+50), 'RCross');
+                gameState.isSquareClicked[2] = true;
+                winnerDeciderObj[2] = 'W';
+                gameState.playerTurnInt += 1;
+                winnerDecider();
+                if (winnerDeciderVar == 0) {
+                    gameAlert('YOU WIN!!!');
+                } else {
+                    computerPlayTimer();
+                }
+            } else if  ((gameState.isSquareClicked[2] == false) && (gameState.playerTurnInt != 0)) {
+                gameAlertA('WAIT FOR COMPUTER\'S TURN');
+            } else if (gameState.isSquareClicked[2] = true) {
+                gameAlertA('BOX 3 IS ALREADY CLICKED');
+            }
+            
+        });
+
+        gameState.rect4.on('pointerup', ()=>{
+            
+            if ((gameState.isSquareClicked[3] == false) && (gameState.playerTurnInt == 0)) {
+                this.add.sprite((rectW+50), (rectH+150), 'RCross');
+                gameState.isSquareClicked[3] = true;
+                winnerDeciderObj[3] = 'W';
+                gameState.playerTurnInt += 1;
+                winnerDecider();
+                if (winnerDeciderVar == 0) {
+                    gameAlert('YOU WIN!!!');
+                } else {
+                    computerPlayTimer();
+                }
+            } else if  ((gameState.isSquareClicked[3] == false) && (gameState.playerTurnInt != 0)) {
+                gameAlertA('WAIT FOR COMPUTER\'S TURN');
+            } else if (gameState.isSquareClicked[3] = true) {
+                gameAlertA('BOX 4 IS ALREADY CLICKED');
+            }
+            
+        });
+
+        gameState.rect5.on('pointerup', ()=>{
+            
+            if ((gameState.isSquareClicked[4] == false) && (gameState.playerTurnInt == 0)) {
+                this.add.sprite((rectW+150), (rectH+150), 'RCross');
+                gameState.isSquareClicked[4] = true;
+                winnerDeciderObj[4] = 'W';
+                gameState.playerTurnInt += 1;
+                winnerDecider();
+                if (winnerDeciderVar == 0) {
+                    gameAlert('YOU WIN!!!');
+                } else {
+                    computerPlayTimer();
+                }
+            } else if  ((gameState.isSquareClicked[4] == false) && (gameState.playerTurnInt != 0)) {
+                gameAlertA('WAIT FOR COMPUTER\'S TURN');
+            } else if (gameState.isSquareClicked[4] = true) {
+                gameAlertA('BOX 5 IS ALREADY CLICKED');
+            }
+            
+        });
+
+        gameState.rect6.on('pointerup', ()=>{
+            
+            if ((gameState.isSquareClicked[5] == false) && (gameState.playerTurnInt == 0)) {
+                this.add.sprite((rectW+250), (rectH+150), 'RCross');
+                gameState.isSquareClicked[5] = true;
+                winnerDeciderObj[5] = 'W';
+                gameState.playerTurnInt += 1;
+                winnerDecider();
+                if (winnerDeciderVar == 0) {
+                    gameAlert('YOU WIN!!!');
+                } else {
+                    computerPlayTimer();
+                }
+            } else if  ((gameState.isSquareClicked[5] == false) && (gameState.playerTurnInt != 0)) {
+                gameAlertA('WAIT FOR COMPUTER\'S TURN');
+            } else if (gameState.isSquareClicked[5] = true) {
+                gameAlertA('BOX 6 IS ALREADY CLICKED');
+            }
+            
+        });
+
+        gameState.rect7.on('pointerup', ()=>{
+            
+            if ((gameState.isSquareClicked[6] == false) && (gameState.playerTurnInt == 0)) {
+                this.add.sprite((rectW+50), (rectH+250), 'RCross');
+                gameState.isSquareClicked[6] = true;
+                winnerDeciderObj[6] = 'W';
+                gameState.playerTurnInt += 1;
+                winnerDecider();
+                if (winnerDeciderVar == 0) {
+                    gameAlert('YOU WIN!!!');
+                } else {
+                    computerPlayTimer();
+                }
+            } else if  ((gameState.isSquareClicked[6] == false) && (gameState.playerTurnInt != 0)) {
+                gameAlertA('WAIT FOR COMPUTER\'S TURN');
+            } else if (gameState.isSquareClicked[6] = true) {
+                gameAlertA('BOX 7 IS ALREADY CLICKED');
+            }
+            
+        });
+
+        gameState.rect8.on('pointerup', ()=>{
+            
+            if ((gameState.isSquareClicked[7] == false) && (gameState.playerTurnInt == 0)) {
+                this.add.sprite((rectW+150), (rectH+250), 'RCross');
+                gameState.isSquareClicked[7] = true;
+                winnerDeciderObj[7] = 'W';
+                gameState.playerTurnInt += 1;
+                winnerDecider();
+                if (winnerDeciderVar == 0) {
+                    gameAlert('YOU WIN!!!');
+                } else {
+                    computerPlayTimer();
+                }
+            } else if  ((gameState.isSquareClicked[7] == false) && (gameState.playerTurnInt != 0)) {
+                gameAlertA('WAIT FOR COMPUTER\'S TURN');
+            } else if (gameState.isSquareClicked[7] = true) {
+                gameAlertA('BOX 8 IS ALREADY CLICKED');
+            }
+            
+        });
+
+        gameState.rect9.on('pointerup', ()=>{
+            
+            if ((gameState.isSquareClicked[8] == false) && (gameState.playerTurnInt == 0)) {
+                this.add.sprite((rectW+250), (rectH+250), 'RCross');
+                gameState.isSquareClicked[8] = true;
+                winnerDeciderObj[8] = 'W';
+                gameState.playerTurnInt += 1;
+                winnerDecider();
+                if (winnerDeciderVar == 0) {
+                    gameAlert('YOU WIN!!!');
+                } else {
+                    computerPlayTimer();
+                }
+            } else if  ((gameState.isSquareClicked[8] == false) && (gameState.playerTurnInt != 0)) {
+                gameAlertA('WAIT FOR COMPUTER\'S TURN');
+            } else if (gameState.isSquareClicked[8] = true) {
+                gameAlertA('BOX 9 IS ALREADY CLICKED');
+            }
+            
+        });
+
+        
+        
+        // the function that makes the computer play as a player
+        computerPlay = () => {
+            var cPlay1 = DefendFunc(winnerDeciderObj);
+            if (cPlay1 == 0) {
+                this.add.sprite((rectW+50), (rectH+50), 'GSquare');
+                gameState.isSquareClicked[0] = true;
+                winnerDeciderObj[0] = 'L';
+                winnerDecider();
+                if (winnerDeciderVar == 1) {
+                    gameAlert('YOU LOSE!!!');
+                } else {
+                    gameState.playerTurnInt -= 1;
+                }
+            } else if (cPlay1 == 1) {
+                this.add.sprite((rectW+150), (rectH+50), 'GSquare');
+                gameState.isSquareClicked[1] = true;
+                winnerDeciderObj[1] = 'L';
+                winnerDecider();
+                if (winnerDeciderVar == 1) {
+                    gameAlert('YOU LOSE!!!');
+                } else {
+                    gameState.playerTurnInt -= 1;
+                }
+            } else if (cPlay1 == 2) {
+                this.add.sprite((rectW+250), (rectH+50), 'GSquare');
+                gameState.isSquareClicked[2] = true;
+                winnerDeciderObj[2] = 'L';
+                winnerDecider();
+                if (winnerDeciderVar == 1) {
+                    gameAlert('YOU LOSE!!!');
+                } else {
+                    gameState.playerTurnInt -= 1;
+                }
+            } else if (cPlay1 == 3) {
+                this.add.sprite((rectW+50), (rectH+150), 'GSquare');
+                gameState.isSquareClicked[3] = true;
+                winnerDeciderObj[3] = 'L';
+                winnerDecider();
+                if (winnerDeciderVar == 1) {
+                    gameAlert('YOU LOSE!!!');
+                } else {
+                    gameState.playerTurnInt -= 1;
+                }
+            } else if (cPlay1 == 4) {
+                this.add.sprite((rectW+150), (rectH+150), 'GSquare');
+                gameState.isSquareClicked[4] = true;
+                winnerDeciderObj[4] = 'L';
+                winnerDecider();
+                if (winnerDeciderVar == 1) {
+                    gameAlert('YOU LOSE!!!');
+                } else {
+                    gameState.playerTurnInt -= 1;
+                }
+            } else if (cPlay1 == 5) {
+                this.add.sprite((rectW+250), (rectH+150), 'GSquare');
+                gameState.isSquareClicked[5] = true;
+                winnerDeciderObj[5] = 'L';
+                winnerDecider();
+                if (winnerDeciderVar == 1) {
+                    gameAlert('YOU LOSE!!!');
+                } else {
+                    gameState.playerTurnInt -= 1;
+                }
+            } else if (cPlay1 == 6) {
+                this.add.sprite((rectW+50), (rectH+250), 'GSquare');
+                gameState.isSquareClicked[6] = true;
+                winnerDeciderObj[6] = 'L';
+                winnerDecider();
+                if (winnerDeciderVar == 1) {
+                    gameAlert('YOU LOSE!!!');
+                } else {
+                    gameState.playerTurnInt -= 1;
+                }
+            } else if (cPlay1 == 7) {
+                this.add.sprite((rectW+150), (rectH+250), 'GSquare');
+                gameState.isSquareClicked[7] = true;
+                winnerDeciderObj[7] = 'L';
+                winnerDecider();
+                if (winnerDeciderVar == 1) {
+                    gameAlert('YOU LOSE!!!');
+                } else {
+                    gameState.playerTurnInt -= 1;
+                }
+            } else if (cPlay1 == 8) {
+                this.add.sprite((rectW+250), (rectH+250), 'GSquare');
+                gameState.isSquareClicked[8] = true;
+                winnerDeciderObj[8] = 'L';
+                winnerDecider();
+                if (winnerDeciderVar == 1) {
+                    gameAlert('YOU LOSE!!!');
+                } else {
+                    gameState.playerTurnInt -= 1;
+                }
+            } else if (cPlay1 == undefined) {
+                winnerDecider();
+                if ((winnerDeciderVar == 1) || (winnerDeciderVar == 2)) {
+                    gameAlert('YOU LOSE!!!');
+                    gameState.playerTurnInt = 0;
+                } else {
+                    gameState.playerTurnInt -= 1;
+                }
+            }
+            
+        }
+
+        // to make player wait for 3 seconds
+        
+        computerPlayTimerTxt = this.add.text(600, 10, '');
+        computerPlayTimer = () => {
+            computerPlayTimerVar = this.time.addEvent({
+                callback: computerPlay,
+                delay: 1000,
+                callbackScope: this,
+                loop: false
+            });
+        }
+
+        // setting our game Alert function
+       /* var gameAlertTexts = this.add.text(10, 10, '');
+       // gameAlert = (...gameAlertAugs) => {
+        //      gameAlertTexts.setText(gameAlertAugs);
+        } */
+
+        
+
+    // alert for gameAlert
+        gameAlert = (info, Opt = 'Yes') => {
+    var result_arr_info = info.split("*");
+  
+  var infos = "";
+      for (let i = 0; i < result_arr_info.length; i++) {
+        infos += "<p>" + result_arr_info[i] + "</p>";
+      }
+  
+    var content = "" + 
+  "<div id=\"subalertDiv\" class=\"w3-modal\">" +
+  "<div class=\"w3-modal-content\">" +
+  "<div class=\"w3-panel w3-blue w3-display-container\">" +
+    "<span onclick=\"gameAlert('Nothing','No')\"" +
+    "class=\"w3-button w3-large w3-display-topright\">&times;</span><div class=\"w3-center\">" +
+    "<h3>ALERT</h3>" +
+    infos +
+  "</div></div>" +
+  "</div>" +
+  "</div>";
+  
+      if (Opt == "Yes") {
+        document.getElementById("alertDiv").innerHTML = content;
+        document.getElementById('subalertDiv').style.display='block'
+      } else {
+        document.getElementById("alertDiv").innerHTML = "";
+      }
+  }
+
+        // alert for gameAlertA
+        var gameAlertARect1 = this.add.rectangle(((window.innerWidth/2) - 150), 20, 300, 70, 0xffff00).setOrigin(0, 0).setVisible(false);
+        var gameAlertAX = this.add.text(((window.innerWidth/2) + 150 - 28), 20, 'X', {fill: '#ff0000', fontSize:'32px', stroke:'#ff0000', strokeThickness:1}).setInteractive().setVisible(false);
+        var gameAlertAInfo = this.add.text(((window.innerWidth/2) - 140), 55, 'info', {fill: '#000000', fontSize:'16px', fixedWidth:'300', stroke:'#000000', strokeThickness:1}).setVisible(false);
+
+        gameAlertAX.on("pointerup", function() {
+            gameAlertADel();
+       });
+
+       gameAlertADel = () => {
+          gameAlertARect1.setVisible(false);
+          gameAlertAX.setVisible(false);
+          gameAlertAInfo.setVisible(false);
+       }
+
+       gameAlertAAdd = (info) => {
+          gameAlertARect1.setVisible(true);
+          gameAlertAX.setVisible(true);
+          gameAlertAInfo.setVisible(true);
+          gameAlertAInfo.setText(info);
+       }
+
+  gameAlertA = (info) => {
+            this.time.removeEvent(gameAlertATimerVar);
+            gameAlertAAdd(info);
+      gameAlertATimerVar = this.time.addEvent({
+                delay: 5000,
+                callback: gameAlertADel,
+                callbackScope: this,
+                loop: false
+            });
+  }
+
+
+
+
+        var winnerDeciderVar = 2;
+        winnerDecider = () => {
+            if (
+            ((winnerDeciderObj[0] == 'W') && (winnerDeciderObj[1] == 'W') && (winnerDeciderObj[2] == 'W'))
+            ||
+            ((winnerDeciderObj[3] == 'W') && (winnerDeciderObj[4] == 'W') && (winnerDeciderObj[5] == 'W'))
+            ||
+            ((winnerDeciderObj[6] == 'W') && (winnerDeciderObj[7] == 'W') && (winnerDeciderObj[8] == 'W'))
+            ||
+            ((winnerDeciderObj[0] == 'W') && (winnerDeciderObj[3] == 'W') && (winnerDeciderObj[6] == 'W'))
+            ||
+            ((winnerDeciderObj[1] == 'W') && (winnerDeciderObj[4] == 'W') && (winnerDeciderObj[7] == 'W'))
+            ||
+            ((winnerDeciderObj[2] == 'W') && (winnerDeciderObj[5] == 'W') && (winnerDeciderObj[8] == 'W'))
+            ||
+            ((winnerDeciderObj[0] == 'W') && (winnerDeciderObj[4] == 'W') && (winnerDeciderObj[8] == 'W'))
+            ||
+            ((winnerDeciderObj[2] == 'W') && (winnerDeciderObj[4] == 'W') && (winnerDeciderObj[6] == 'W'))
+            ) {
+                winnerDeciderVar = 0;
+
+            } else if  (
+                ((winnerDeciderObj[0] == 'L') && (winnerDeciderObj[1] == 'L') && (winnerDeciderObj[2] == 'L'))
+            ||
+            ((winnerDeciderObj[3] == 'L') && (winnerDeciderObj[4] == 'L') && (winnerDeciderObj[5] == 'L'))
+            ||
+            ((winnerDeciderObj[6] == 'L') && (winnerDeciderObj[7] == 'L') && (winnerDeciderObj[8] == 'L'))
+            ||
+            ((winnerDeciderObj[0] == 'L') && (winnerDeciderObj[3] == 'L') && (winnerDeciderObj[6] == 'L'))
+            ||
+            ((winnerDeciderObj[1] == 'L') && (winnerDeciderObj[4] == 'L') && (winnerDeciderObj[7] == 'L'))
+            ||
+            ((winnerDeciderObj[2] == 'L') && (winnerDeciderObj[5] == 'L') && (winnerDeciderObj[8] == 'L'))
+            ||
+            ((winnerDeciderObj[0] == 'L') && (winnerDeciderObj[4] == 'L') && (winnerDeciderObj[8] == 'L'))
+            ||
+            ((winnerDeciderObj[2] == 'L') && (winnerDeciderObj[4] == 'L') && (winnerDeciderObj[6] == 'L'))
+            
+            ) {
+                winnerDeciderVar = 1;
+            } else {
+                winnerDeciderVar = 2;
+            }
+        }
+
+        DefendFunc = (list) => {
+
+let listW = [];
+for(i=0;i<list.length;i++) {
+    if (list[i] == 'W') {
+      listW.push(i);
+    }
+}
+
+let listWL = [];
+for(i=0;i<list.length;i++) {
+    if (list[i] == 'W' || list[i] == 'L') {
+      listWL.push(i);
+    }
+}
+
+let listN = [];
+    for(i=0;i<list.length;i++) {
+        if (list[i] == 'N') {
+          listN.push(i);
+        }
+    }
+    
+// Create a Map
+const AllPossibleWin = new Map([
+[0, [1, 2, 3, 6, 4, 8]],
+[1, [0, 2, 4, 7]],
+[2, [0, 1, 5, 8, 4, 6]],
+[3, [0, 6, 4, 5]],
+[4, [3, 5, 1, 7, 0, 8, 2, 6]],
+[5, [2, 8, 3, 4]],
+[6, [0, 3, 7, 8, 4, 2]],
+[7, [4, 1, 6, 8]],
+[8, [5, 2, 6, 7, 0, 4]]
+]);
+
+// Create a Map
+const PossibleWinMap = new Map();
+let PossibleWin = [];
+for(i=0;i<listW.length;i++) {
+PossibleWinMap.set(listW[i], AllPossibleWin.get(listW[i]));
+//PossibleWin = PossibleWin.concat(AllPossibleWin.get(listW[i]));
+}
+
+// a for listW, b for PossibleWinMap and c for PossibleWin
+function intersectionOfTwo(a, b){
+    var c = [];
+for(let i=0; i < (a.length - 1); i++) {
+for(let j=1; j < a.length; j++) {
+  var set1 = b.get(a[i]);
+  var set2 = b.get(a[j]);
+  for(let m=0;m<set1.length;m++){
+    for(let n=0;n<set2.length;n++){
+      if(set1[m] == set2[n]){
+        c.push(set1[m]);
+      }
+    }
+  }
+}
+}
+return c;
+}
+
+PossibleWin = intersectionOfTwo(listW, PossibleWinMap);
+
+for(i=0;i<listWL.length;i++) {
+  for(j=0;j<PossibleWin.length;j++){
+      if (listWL[i] == PossibleWin[j]){
+        delete PossibleWin[j];
+      }
+  }
+}
+
+function checkUndefined(x) {
+return x != undefined;
+}
+
+PossibleWin = PossibleWin.filter(checkUndefined);
+
+if (listW.length == 1 && listWL.length == 1) {
+    PossibleWin = AllPossibleWin.get(listW[0]);
+  }
+
+if (PossibleWin.length == 0) {
+    PossibleWin = PossibleWin.concat(listN);
+  }
+
+// Create a Set
+const PossibleWinSet = new Set(PossibleWin);
+PossibleWin = [];
+
+for (const x of PossibleWinSet.values()) {
+    PossibleWin.push(x);
+}
+
+//var cPlay1 = Math.floor(Math.random() * PossibleWin.length);
+return PossibleWin[Math.floor(Math.random() * PossibleWin.length)];
+
+}
+
+
+
+   
+
+       
+    }
+
+    function update()
+    {
+        
+
+    }
+
+    const config = {
+        type: Phaser.AUTO,
+        width: window.innerWidth,
+        height: window.innerHeight,
+        backgroundColor: 0x37eb34,
+        parent: 'phaser-id',
+        physics: {
+            default: 'arcade',
+            arcade: {
+                gravity: { y: 200 }
+            }
+        },
+        scene: {
+            preload,
+            create,
+            update
+        }
+    };
+
+    const game = new Phaser.Game(config);
+    </script>
+
+<script>
+function myAlert(info, Opt) {
+    var result_arr_info = info.split("*");
+  
+  var infos = "";
+      for (let i = 0; i < result_arr_info.length; i++) {
+        infos += "<p>" + result_arr_info[i] + "</p>";
+      }
+  
+    var content = "" + 
+  "<div id=\"subalertDiv\" class=\"w3-modal\">" +
+  "<div class=\"w3-modal-content\">" +
+  "<div class=\"w3-panel w3-blue w3-display-container\">" +
+    "<span onclick=\"myAlert('Nothing','No')\"" +
+    "class=\"w3-button w3-large w3-display-topright\">&times;</span><div class=\"w3-center\">" +
+    "<h3>ALERT</h3>" +
+    infos +
+  "</div></div>" +
+  "</div>" +
+  "</div>";
+  
+      if (Opt == "Yes") {
+        document.getElementById("alertDiv").innerHTML = content;
+        document.getElementById('subalertDiv').style.display='block'
+      } else {
+        document.getElementById("alertDiv").innerHTML = "";
+      }
+  }
+</script>
+
+
+</body>
+</html>
